@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saad Pro Nutrition (SPN)</title>
+    <style>
+        :root { --primary: #0a4d28; --gold: #c7a14e; --bg: #f4f7f6; --accent: #111; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); margin: 0; padding: 0; }
+        .container { max-width: 600px; margin: auto; padding-bottom: 100px; }
+        
+        /* الهيدر بالهوية الجديدة */
+        .header { background: linear-gradient(135deg, var(--accent), #222); color: white; padding: 45px 15px; text-align: center; border-radius: 0 0 35px 35px; box-shadow: 0 5px 20px rgba(0,0,0,0.4); border-bottom: 3px solid var(--gold); }
+        .header h1 { margin: 0; font-size: 2rem; letter-spacing: 1px; color: var(--gold); font-family: 'Arial Black', sans-serif; }
+        .header p { opacity: 0.9; font-size: 1.1rem; margin-top: 8px; font-weight: bold; color: #fff; letter-spacing: 3px; }
+
+        .tab-bar { position: fixed; bottom: 0; width: 100%; max-width: 600px; background: white; display: flex; box-shadow: 0 -2px 15px rgba(0,0,0,0.1); z-index: 1000; border-top: 3px solid var(--gold); }
+        .tab-btn { flex: 1; padding: 12px 5px; border: none; background: none; font-weight: bold; color: #888; cursor: pointer; font-size: 0.85rem; }
+        .tab-btn.active { color: var(--primary); background: #f9f9f9; }
+
+        .section { display: none; padding: 15px; animation: fadeIn 0.4s; }
+        .section.active { display: block; }
+
+        .day-block { background: white; border-radius: 15px; margin-bottom: 15px; border-right: 6px solid var(--gold); box-shadow: 0 2px 5px rgba(0,0,0,0.05); overflow: hidden; }
+        .day-header { background: #e8f0eb; padding: 12px 15px; font-weight: bold; color: var(--primary); font-size: 1.1rem; }
+        .meal-row { padding: 12px 15px; border-bottom: 1px solid #f5f5f5; display: flex; flex-direction: column; }
+        .meal-label { font-weight: bold; color: var(--gold); font-size: 0.9rem; margin-bottom: 3px; }
+
+        .info-card { background: white; padding: 15px; border-radius: 12px; margin-bottom: 10px; border: 1px solid #ddd; }
+        .info-title { color: var(--primary); font-weight: bold; display: block; margin-bottom: 10px; border-bottom: 1px solid #eee; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+        th, td { border: 1px solid #eee; padding: 10px; text-align: center; }
+        th { background: #f9f9f9; color: var(--primary); }
+
+        .action-btns { display: flex; gap: 10px; padding: 15px; justify-content: center; }
+        .btn { padding: 12px 25px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; font-size: 0.9rem; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .btn-print { background: #333; color: white; }
+        .btn-wa { background: #25D366; color: white; }
+
+        .footer-credit { text-align: center; padding: 30px; font-size: 0.9rem; color: #fff; background: #111; margin-top: 25px; line-height: 1.8; border-top: 5px solid var(--gold); }
+        .footer-credit strong { color: var(--gold); font-size: 1.1rem; }
+
+        @media print { .tab-bar, .action-btns { display: none; } .section { display: block !important; } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Saad Pro Nutrition</h1>
+        <p>SPN</p>
+    </div>
+
+    <div class="action-btns">
+        <button class="btn btn-print" onclick="window.print()">🖨️ Print SPN Schedule</button>
+        <button class="btn btn-wa" onclick="shareWhatsApp()">📲 Share via WhatsApp</button>
+    </div>
+
+    <div id="meals" class="section active">
+        <div id="week-list"></div>
+    </div>
+
+    <div id="meat-tech" class="section">
+        <div class="info-card">
+            <span class="info-title">🔥 فنون طهي اللحوم المسموحة</span>
+            <ul style="line-height: 2.3;">
+                <li><strong>مظبي:</strong> الطهي على الحجر الساخن.</li>
+                <li><strong>حنيذ / مندي:</strong> الطهي في المحنذ أو التنور.</li>
+                <li><strong>مشوي:</strong> الشواء الاحترافي على الفحم.</li>
+                <li><strong>مضغوط / مدفون:</strong> الطهي تحت الضغط أو الدفن.</li>
+                <li><strong>مقلقل:</strong> الطهي السريع في الصاج بالزبدة الطبيعية.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="supplements" class="section">
+        <div class="info-card">
+            <span class="info-title">💊 مكملات SPN المعتمدة</span>
+            <table>
+                <tr>
+                    <th>الفئة العمرية</th>
+                    <th>المكمل</th>
+                    <th>الجرعة</th>
+                    <th>الوقت</th>
+                </tr>
+                <tr>
+                    <td>18 - 40 سنة</td>
+                    <td>فيتامين D3</td>
+                    <td>5000 IU</td>
+                    <td>بعد الغداء</td>
+                </tr>
+                <tr>
+                    <td>40 - 60+ سنة</td>
+                    <td>أوميغا 3</td>
+                    <td>1000 mg</td>
+                    <td>وسط الوجبة</td>
+                </tr>
+                <tr>
+                    <td>للجميع</td>
+                    <td>فيتامين B12</td>
+                    <td>1000 mcg</td>
+                    <td>تحت اللسان</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="footer-credit">
+        إعداد فني مختبر سبت العلايه<br>
+        <strong>سعد علي القرني</strong><br>
+        All Rights Reserved to <strong>SPN</strong> © 2026
+    </div>
+</div>
+
+<nav class="tab-bar">
+    <button class="tab-btn active" onclick="showTab('meals', this)">🥗 الوجبات</button>
+    <button class="tab-btn" onclick="showTab('meat-tech', this)">🍖 طهي اللحوم</button>
+    <button class="tab-btn" onclick="showTab('supplements', this)">💊 المكملات</button>
+</nav>
+
+<script>
+    const data = [
+        { d: "الأحد", b: "كبدة غنم طازجة (مقلقل بالزبدة)", l: "لحم مظبي مع أرز عنبر", s: "قهوة سعودية وتمر + شاي أخضر وسناك نخالة", d_: "فتة نخالة بسمن وعسل" },
+        { d: "الاثنين", b: "توست نخالة وجبن شيدر", l: "لحم مضغوط (كوسة وجزر)", s: "قهوة سعودية وتمر + شاي أخضر", d_: "بطاطس مسلوقة بالسمن البري" },
+        { d: "الثلاثاء", b: "كبدة غنم مع توست نخالة", l: "لحم حنيذ وأرز عنبر", s: "قهوة سعودية وتمر + تمرية محمصة", d_: "عصيدة نخالة بسمن وعسل" },
+        { d: "الأربعاء", b: "توست نخالة بزبدة ومربى", l: "لحم مندي مع قرصان نخالة", s: "قهوة سعودية وتمر + شاي أخضر", d_: "بطاطس مهروسة بالزبدة" },
+        { d: "الخميس", b: "مقلقل كبدة غنم طازج", l: "لحم مدفون وأرز بسمتي", s: "قهوة سعودية وتمر + سناك نخالة", d_: "فتة سمن وعسل (نخالة)" },
+        { d: "الجمعة", b: "توست نوتيلا وموز", l: "سمك مشوي على الفحم مع أرز", s: "قهوة سعودية وتمر + شاي أخضر", d_: "بطاطس بالفرن بزيت زيتون" },
+        { d: "السبت", b: "كبدة غنم مع توست نخالة", l: "لحم مطهو بمرق مع عصيدة", s: "قهوة سعودية وتمر + تمرية", d_: "قرصان خفيف بسمن وعسل" }
+    ];
+
+    const list = document.getElementById('week-list');
+    list.innerHTML = data.map(item => `
+        <div class="day-block">
+            <div class="day-header">${item.d}</div>
+            <div class="meal-row"><span class="meal-label">🍳 فطور:</span> <span>${item.b}</span></div>
+            <div class="meal-row"><span class="meal-label">🍲 غداء:</span> <span>${item.l}</span></div>
+            <div class="meal-row"><span class="meal-label">☕ سناك (SPN):</span> <span>${item.s}</span></div>
+            <div class="meal-row"><span class="meal-label">🌙 عشاء:</span> <span>${item.d_}</span></div>
+        </div>
+    `).join('');
+
+    function showTab(id, btn) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        btn.classList.add('active');
+        window.scrollTo(0,0);
+    }
+
+    function shareWhatsApp() {
+        const text = encodeURIComponent("Saad Pro Nutrition (SPN) \nCheck the schedule here: " + window.location.href);
+        window.open(`https://api.whatsapp.com/send?text=${text}`);
+    }
+</script>
+
+</body>
+</html>
