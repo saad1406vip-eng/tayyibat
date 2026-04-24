@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saad Pro Nutrition (SPN)</title>
+    <style>
+        :root { --primary: #0a4d28; --gold: #c7a14e; --bg: #f4f7f6; --accent: #111; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); margin: 0; padding: 0; }
+        .container { max-width: 600px; margin: auto; padding-bottom: 120px; }
+        
+        .header { background: linear-gradient(135deg, var(--accent), #222); color: white; padding: 40px 15px; text-align: center; border-radius: 0 0 35px 35px; border-bottom: 3px solid var(--gold); }
+        .header h1 { margin: 0; font-size: 1.8rem; color: var(--gold); font-family: 'Arial Black', sans-serif; }
+        .header p { opacity: 0.9; font-size: 1.1rem; margin-top: 8px; font-weight: bold; letter-spacing: 3px; }
+
+        .tab-bar { position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); width: 95%; max-width: 580px; background: white; display: flex; flex-direction: row; box-shadow: 0 8px 20px rgba(0,0,0,0.15); z-index: 1000; border-radius: 15px; border: 1px solid #ddd; overflow: hidden; }
+        .tab-btn { flex: 1; padding: 15px 2px; border: none; background: none; font-weight: bold; color: #777; cursor: pointer; font-size: 0.75rem; }
+        .tab-btn.active { color: var(--primary); background: #f0f4f2; border-bottom: 3px solid var(--gold); }
+
+        .section { display: none; padding: 15px; animation: fadeIn 0.4s; }
+        .section.active { display: block; }
+
+        .info-card { background: white; padding: 15px; border-radius: 12px; margin-bottom: 10px; border: 1px solid #ddd; }
+        .info-title { color: var(--primary); font-weight: bold; display: block; margin-bottom: 10px; border-bottom: 1px solid #eee; }
+        
+        input, select { width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #ccc; border-radius: 8px; }
+        .calc-result { background: #f9f9f9; padding: 10px; border-radius: 8px; margin-top: 10px; font-weight: bold; color: var(--primary); text-align: center; font-size: 0.85rem; }
+
+        .note-box { background: #eef7f2; border-right: 5px solid var(--primary); padding: 15px; border-radius: 10px; font-size: 0.85rem; line-height: 1.6; margin-top: 15px; }
+        .forbidden-list { color: #d9534f; line-height: 1.8; font-weight: bold; list-style-type: square; padding-right: 20px; }
+
+        .shop-cat { color: var(--gold); font-weight: bold; margin-top: 12px; display: block; border-bottom: 1px solid #eee; padding-bottom: 3px; }
+        .shop-item { display: flex; justify-content: space-between; padding: 6px 0; font-size: 0.85rem; border-bottom: 1px dashed #f0f0f0; }
+
+        .day-block { background: white; border-radius: 15px; margin-bottom: 15px; border-right: 6px solid var(--gold); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .day-header { background: #e8f0eb; padding: 10px 15px; font-weight: bold; color: var(--primary); }
+        .meal-row { padding: 10px 15px; border-bottom: 1px solid #f5f5f5; display: flex; flex-direction: column; }
+        .meal-label { font-weight: bold; color: var(--gold); font-size: 0.85rem; }
+
+        table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+        th, td { border: 1px solid #eee; padding: 8px; text-align: center; }
+
+        .footer-credit { text-align: center; padding: 25px; font-size: 0.85rem; color: #fff; background: #111; margin-top: 20px; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Saad Pro Nutrition</h1>
+        <p>SPN</p>
+    </div>
+
+    <div id="meals" class="section active">
+        <div id="week-list"></div>
+    </div>
+
+    <div id="supplements" class="section">
+        <div class="info-card">
+            <span class="info-title">💊 مكملات الكبار</span>
+            <table>
+                <tr><th>المكمل</th><th>الجرعة</th><th>الوقت</th></tr>
+                <tr><td>فيتامين D3</td><td>5000 IU</td><td>بعد الغداء</td></tr>
+                <tr><td>أوميغا 3</td><td>1000 mg</td><td>وسط الوجبة</td></tr>
+                <tr><td>فيتامين B12 (بلع)</td><td>1000 mcg</td><td>صباحاً (بعد الفطور)</td></tr>
+            </table>
+        </div>
+        <div class="info-card">
+            <span class="info-title">👶 مكملات الأطفال</span>
+            <table>
+                <tr><th>المكمل</th><th>الهدف</th></tr>
+                <tr><td>فيتامين D3 نقط</td><td>نمو العظام</td></tr>
+                <tr><td>أوميغا 3 شراب</td><td>التركيز والنشاط</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="forbidden" class="section">
+        <div class="info-card">
+            <span class="info-title">🚫 الممنوعات العامة</span>
+            <ul class="forbidden-list">
+                <li>الدقيق الأبيض (المسموح بر البلاد حبة كاملة وتوست النخالة فقط).</li>
+                <li>جميع الزيوت النباتية المهدرجة والمصنعة.</li>
+                <li>السكر المكرر بجميع أشكاله والحلويات.</li>
+                <li>البقوليات والحبوب الكاملة والبذور.</li>
+                <li>المشروبات الغازية والمعلبات بجميع أنواعها.</li>
+            </ul>
+        </div>
+        <div class="note-box">
+            <strong>نوته SPN العلمية:</strong><br>
+            يعمل هذا النظام على تقليل الالتهابات وترميم جدار الأمعاء عبر استبعاد المحسسات الغذائية. تظهر النتائج الأولية مثل خفة البطن وتحسن النوم خلال الأسبوع الأول، بينما تتحسن مستويات الطاقة والنشاط العام بشكل ملحوظ خلال الشهر الأول.
+        </div>
+    </div>
+
+    <div id="calc" class="section">
+        <div class="info-card">
+            <span class="info-title">📊 حساب الكتلة والاحتياج</span>
+            <input type="number" id="weight" placeholder="الوزن (كجم)">
+            <input type="number" id="height" placeholder="الطول (سم)">
+            <button onclick="calculateBMI()" style="width:100%; padding:10px; background:var(--primary); color:white; border:none; border-radius:8px;">احسب</button>
+            <div id="bmi-res" class="calc-result"></div>
+        </div>
+        <div class="info-card">
+            <span class="info-title">🍎 حاسبة سعرات SPN</span>
+            <select id="food-type">
+                <option value="50">تمر (حبة - 50 كالوري)</option>
+                <option value="80">بسكويت نخالة (قطعة - 80 كالوري)</option>
+                <option value="120">لقمة نخالة (120 كالوري)</option>
+            </select>
+            <input type="number" id="quantity" placeholder="العدد">
+            <button onclick="calculateCalories()" style="width:100%; padding:10px; background:var(--gold); color:white; border:none; border-radius:8px;">احسب السعرات</button>
+            <div id="cal-res" class="calc-result"></div>
+        </div>
+    </div>
+
+    <div id="shopping" class="section">
+        <div class="info-card">
+            <span class="info-title">🛒 سلة تسوق SPN الذكية</span>
+            
+            <span class="shop-cat">🥩 البروتين (طازج)</span>
+            <div class="shop-item"><span>لحم غنم بلدي / حاشي لباني</span> <span>جودة عالية</span></div>
+            <div class="shop-item"><span>كبدة غنم (يومية)</span> <span>طازجة</span></div>
+            <div class="shop-item"><span>سمك (كنعد، هامور، ناجل)</span> <span>مشوي</span></div>
+
+            <span class="shop-cat">🌾 النشويات (البدائل الصحية)</span>
+            <div class="shop-item"><span>بر البلاد (حبة كاملة)</span> <span>بديل الدقيق</span></div>
+            <div class="shop-item"><span>توست النخالة / نخالة ناعمة</span> <span>للخبز</span></div>
+            <div class="shop-item"><span>أرز عنبر أو بسمتي درجة أولى</span> <span>مغسول جيداً</span></div>
+            <div class="shop-item"><span>بطاطس محلية</span> <span>مسلوقة/مشوية</span></div>
+
+            <span class="shop-cat">🧈 الدهون والتحلية</span>
+            <div class="shop-item"><span>زبدة طبيعية (لورباك/المراعي)</span> <span>بديل الزيوت</span></div>
+            <div class="shop-item"><span>سمن غنم بري أصلي</span> <span>للطبخ</span></div>
+            <div class="shop-item"><span>عسل سدر أو دبس تمر أصلي</span> <span>بديل السكر</span></div>
+
+            <span class="shop-cat">☕ المشروبات والفاكهة</span>
+            <div class="shop-item"><span>بن هرري / لقمتي + هيل وزعفران</span> <span>القهوة</span></div>
+            <div class="shop-item"><span>شاي أخضر (نوع فاخر)</span> <span>مضاد أكسدة</span></div>
+            <div class="shop-item"><span>تمر (سكري/خلاص) + رطب</span> <span>تحلية يومية</span></div>
+        </div>
+    </div>
+
+    <div class="footer-credit">
+        إعداد فني مختبر سبت العلايه<br>
+        <strong>سعد علي القرني</strong><br>
+        All Rights Reserved to SPN © 2026
+    </div>
+</div>
+
+<nav class="tab-bar">
+    <button class="tab-btn active" onclick="showTab('meals', this)">الوجبات</button>
+    <button class="tab-btn" onclick="showTab('supplements', this)">المكملات</button>
+    <button class="tab-btn" onclick="showTab('forbidden', this)">الممنوعات</button>
+    <button class="tab-btn" onclick="showTab('calc', this)">الحاسبه</button>
+    <button class="tab-btn" onclick="showTab('shopping', this)">السله</button>
+</nav>
+
+<script>
+    function calculateBMI() {
+        const w = document.getElementById('weight').value;
+        const h = document.getElementById('height').value / 100;
+        if(w && h) {
+            const bmi = (w / (h*h)).toFixed(1);
+            const protein = (w * 1.2).toFixed(0);
+            const carbs = (w * 2).toFixed(0);
+            document.getElementById('bmi-res').innerHTML = `الكتلة: ${bmi} | بروتين: ${protein}ج | كربوهيدرات: ${carbs}ج`;
+        }
+    }
+    function calculateCalories() {
+        const cal = document.getElementById('food-type').value;
+        const q = document.getElementById('quantity').value;
+        if(cal && q) document.getElementById('cal-res').innerHTML = `الإجمالي: ${cal * q} سعرة حرارية`;
+    }
+    const data = [
+        { d: "الأحد", b: "كبدة مقلقل بالزبدة", l: "لحم مظبي وأرز", s: "قهوة وتمر", d_: "فتة بر البلاد بسمن" },
+        { d: "الاثنين", b: "توست نخالة وجبن", l: "لحم مضغوط", s: "شاي وسناك نخالة", d_: "بطاطس مسلوقة" },
+        { d: "الثلاثاء", b: "كبدة وتوست نخالة", l: "لحم حنيذ وأرز", s: "قهوة وتمرية", d_: "عصيدة بر البلاد" },
+        { d: "الأربعاء", b: "توست زبدة وعسل", l: "لحم مندي وقرصان", s: "قهوة وتمر", d_: "بطاطس مهروسة" },
+        { d: "الخميس", b: "مقلقل كبدة طازج", l: "لحم مدفون وأرز", s: "شاي وسناك نخالة", d_: "فتة عسل وسمن" },
+        { d: "الجمعة", b: "توست نخالة وموز", l: "سمك مشوي وأرز", s: "قهوة وتمر", d_: "بطاطس بالفرن" },
+        { d: "السبت", b: "كبدة وتوست", l: "لحم بمرق وعصيدة", s: "قهوة وتمرية", d_: "قرصان بر البلاد" }
+    ];
+    const list = document.getElementById('week-list');
+    list.innerHTML = data.map(item => `
+        <div class="day-block">
+            <div class="day-header">${item.d}</div>
+            <div class="meal-row"><span class="meal-label">🍳 فطور:</span> <span>${item.b}</span></div>
+            <div class="meal-row"><span class="meal-label">🍲 غداء:</span> <span>${item.l}</span></div>
+            <div class="meal-row"><span class="meal-label">☕ سناك:</span> <span>${item.s}</span></div>
+            <div class="meal-row"><span class="meal-label">🌙 عشاء:</span> <span>${item.d_}</span></div>
+        </div>`).join('');
+    function showTab(id, btn) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        btn.classList.add('active');
+        window.scrollTo(0,0);
+    }
+</script>
+</body>
+</html>
