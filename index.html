@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تطبيق الطيبات - النسخة الشاملة</title>
+    <style>
+        :root { --primary: #0a4d28; --gold: #c7a14e; --bg: #f0f4f2; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 0; }
+        .container { max-width: 600px; margin: auto; padding-bottom: 80px; }
+        .header { background: linear-gradient(135deg, var(--primary), #1e5128); color: white; padding: 20px; text-align: center; border-radius: 0 0 30px 30px; }
+        .tab-bar { position: fixed; bottom: 0; width: 100%; max-width: 600px; background: white; display: flex; box-shadow: 0 -2px 15px rgba(0,0,0,0.1); z-index: 1000; }
+        .tab-btn { flex: 1; padding: 15px; border: none; background: none; font-weight: bold; color: #888; cursor: pointer; }
+        .tab-btn.active { color: var(--primary); border-top: 4px solid var(--gold); background: #f9f9f9; }
+        .section { display: none; padding: 15px; animation: fadeIn 0.4s; }
+        .section.active { display: block; }
+        .day-block { background: white; border-radius: 15px; margin-bottom: 15px; overflow: hidden; border-right: 5px solid var(--gold); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .day-header { background: #e8f0eb; padding: 10px 15px; font-weight: bold; color: var(--primary); }
+        .meal-row { padding: 12px 15px; border-bottom: 1px solid #f5f5f5; display: flex; flex-direction: column; }
+        .meal-label { font-weight: bold; color: var(--gold); font-size: 0.9rem; margin-bottom: 4px; }
+        .shop-cat { background: var(--primary); color: white; padding: 8px 15px; border-radius: 8px; margin: 15px 0 10px; display: block; font-weight: bold; }
+        .shop-item { background: white; padding: 12px; border-radius: 10px; margin-bottom: 6px; border: 1px solid #eee; display: flex; justify-content: space-between; }
+        .brand { color: var(--gold); font-size: 0.85rem; font-weight: bold; }
+        .coffee-note { background: #fffdf0; border: 1px solid #f1e0ac; padding: 10px; border-radius: 10px; margin-top: 10px; font-size: 0.85rem; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1 style="margin:0; font-size: 1.3rem;">نظام الطيبات: اللحوم والقهوة</h1>
+        <p style="opacity: 0.9; font-size: 0.85rem;">جدولك اليومي المحدث طبقاً للذائقة الشخصية</p>
+    </div>
+
+    <div id="meals" class="section active">
+        <div id="week-list"></div>
+    </div>
+
+    <div id="shopping" class="section">
+        <span class="shop-cat">☕ ركن القهوة والشاي</span>
+        <div class="shop-item"><span>بن هرري أو لقمتي (تحميص فاتح)</span> <span class="brand">القهوة السعودية</span></div>
+        <div class="shop-item"><span>هيل هندي + زعفران أصلي</span> <span class="brand">بهارات مسموحة</span></div>
+        <div class="shop-item"><span>شاي أخضر (ربيع أو ليبتون)</span> <span class="brand">يومي</span></div>
+        <div class="shop-item"><span>نخالة ناعمة (لصنع سناك الشاي)</span> <span class="brand">بديل البسكويت</span></div>
+
+        <span class="shop-cat">🥩 اللحوم (بلدي طازج)</span>
+        <div class="shop-item"><span>غنم نعيمي/نجدي + كبدة يومية</span> <span class="brand">أساسي</span></div>
+        <div class="shop-item"><span>لحم حاشي لباني صغير</span> <span class="brand">للغداء</span></div>
+
+        <span class="shop-cat">🍎 الفواكه والتمر</span>
+        <div class="shop-item"><span>خلاص، سكري، رطب</span> <span class="brand">يومي</span></div>
+        <div class="shop-item"><span>عنب، تين، رمان (بدون بذر)</span> <span class="brand">فواكه الطيبات</span></div>
+    </div>
+
+    <div id="advice" class="section">
+        <div class="day-block" style="padding:15px; border-right-color: var(--primary);">
+            <h3 style="color: var(--primary)">🍪 سناك الشاي المسموح</h3>
+            <p>بما أن البسكويت الجاهز ممنوع، إليك البديل:</p>
+            <ul>
+                <li><strong>بسكويت النخالة المنزلي:</strong> (نخالة ناعمة + زبدة + عسل) تُخبز في الفرن حتى تصبح مقرمشة.</li>
+                <li><strong>التمرية المحمصة:</strong> تمر معجون مع نخالة محمصة وزبدة (بدون سمسم).</li>
+            </ul>
+            <h3 style="color: var(--primary)">☕ القهوة السعودية</h3>
+            <p>تُقدم دائماً مع التمر. يُفضل الابتعاد عن (الزنجبيل والمسمار) في الدلة لضمان راحة الأمعاء.</p>
+        </div>
+    </div>
+</div>
+
+<nav class="tab-bar">
+    <button class="tab-btn active" onclick="showTab('meals', this)">الوجبات</button>
+    <button class="tab-btn" onclick="showTab('shopping', this)">السلة</button>
+    <button class="tab-btn" onclick="showTab('advice', this)">السناكات</button>
+</nav>
+
+<script>
+    const data = [
+        { d: "الأحد", b: "كبدة غنم طازجة مقلية بالزبدة", l: "كبسة لحم غنم مع أرز عنبر", s: "قهوة سعودية وتمر + شاي أخضر وسناك نخالة", d_: "فتة نخالة بالسمن والعسل" },
+        { d: "الاثنين", b: "توست نخالة وجبن شيدر", l: "مرقوق لحم بعجين النخالة (كوسة وجزر)", s: "قهوة سعودية وتمر + شاي أخضر وفاكهة", d_: "بطاطس مسلوقة بالسمن البري" },
+        { d: "الثلاثاء", b: "كبدة غنم مع توست نخالة", l: "لحم حاشي بمرق خفيف وأرز", s: "قهوة سعودية وتمر + شاي أخضر وتمرية", d_: "عصيدة نخالة بالسمن والعسل" },
+        { d: "الأربعاء", b: "توست نخالة بزبدة ومربى", l: "قرصان نخالة بالسمن والعسل ولحم", s: "قهوة سعودية وتمر + شاي أخضر", d_: "بطاطس مهروسة بالزبدة" },
+        { d: "الخميس", b: "كبدة غنم طازجة", l: "لحم حاشي مضغوط وأرز", s: "قهوة سعودية وتمر + شاي أخضر وسناك نخالة", d_: "فتة سمن وعسل (نخالة)" },
+        { d: "الجمعة", b: "توست نخالة ونوتيلا وموز", l: "سمك كنعد مشوي وأرز أبيض", s: "قهوة سعودية وتمر + شاي أخضر", d_: "بطاطس بالفرن بزيت زيتون" },
+        { d: "السبت", b: "كبدة غنم وتوست", l: "عصيدة بالمرق ولحم الغنم", s: "قهوة سعودية وتمر + شاي أخضر وتمرية", d_: "قرصان خفيف بسمن وعسل" }
+    ];
+
+    const list = document.getElementById('week-list');
+    list.innerHTML = data.map(item => `
+        <div class="day-block">
+            <div class="day-header">${item.d}</div>
+            <div class="meal-row"><span class="meal-label">🍳 الفطور:</span> <span>${item.b}</span></div>
+            <div class="meal-row"><span class="meal-label">🍲 الغداء:</span> <span>${item.l}</span></div>
+            <div class="meal-row"><span class="meal-label">☕ سناك (القهوة والشاي):</span> <span>${item.s}</span></div>
+            <div class="meal-row"><span class="meal-label">🌙 العشاء:</span> <span>${item.d_}</span></div>
+        </div>
+    `).join('');
+
+    function showTab(id, btn) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        btn.classList.add('active');
+    }
+</script>
+
+</body>
+</html>
