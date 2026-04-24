@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام الطيبات - سعد علي القرني</title>
+    <style>
+        :root { --primary: #0a4d28; --gold: #c7a14e; --bg: #f4f7f6; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); margin: 0; padding: 0; }
+        .container { max-width: 600px; margin: auto; padding-bottom: 100px; }
+        
+        /* الهيدر الجديد باسمك */
+        .header { background: linear-gradient(135deg, var(--primary), #1e5128); color: white; padding: 30px 15px; text-align: center; border-radius: 0 0 30px 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .header h1 { margin: 0; font-size: 1.5rem; letter-spacing: 1px; }
+        .header p { opacity: 0.9; font-size: 0.9rem; margin-top: 5px; }
+
+        /* التبويبات السفليّة */
+        .tab-bar { position: fixed; bottom: 0; width: 100%; max-width: 600px; background: white; display: flex; box-shadow: 0 -2px 15px rgba(0,0,0,0.1); z-index: 1000; border-top: 2px solid var(--gold); }
+        .tab-btn { flex: 1; padding: 12px 5px; border: none; background: none; font-weight: bold; color: #888; cursor: pointer; font-size: 0.8rem; }
+        .tab-btn.active { color: var(--primary); background: #f9f9f9; }
+
+        .section { display: none; padding: 15px; animation: fadeIn 0.4s; }
+        .section.active { display: block; }
+
+        /* بطاقات الوجبات */
+        .day-block { background: white; border-radius: 15px; margin-bottom: 15px; border-right: 6px solid var(--gold); box-shadow: 0 2px 5px rgba(0,0,0,0.05); overflow: hidden; }
+        .day-header { background: #e8f0eb; padding: 10px 15px; font-weight: bold; color: var(--primary); }
+        .meal-row { padding: 12px 15px; border-bottom: 1px solid #f5f5f5; display: flex; flex-direction: column; }
+        .meal-label { font-weight: bold; color: var(--gold); font-size: 0.85rem; }
+
+        /* المكملات واللحوم */
+        .info-card { background: white; padding: 15px; border-radius: 12px; margin-bottom: 10px; border: 1px solid #ddd; }
+        .info-title { color: var(--primary); font-weight: bold; display: block; margin-bottom: 10px; border-bottom: 1px solid #eee; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+        th, td { border: 1px solid #eee; padding: 8px; text-align: center; }
+        th { background: #f9f9f9; color: var(--primary); }
+
+        /* أزرار الأكشن */
+        .action-btns { display: flex; gap: 10px; padding: 15px; justify-content: center; }
+        .btn { padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; text-decoration: none; font-size: 0.9rem; }
+        .btn-print { background: #444; color: white; }
+        .btn-wa { background: #25D366; color: white; }
+
+        /* تذييل فني مختبر */
+        .footer-credit { text-align: center; padding: 20px; font-size: 0.8rem; color: #666; background: #eee; margin-top: 20px; line-height: 1.6; }
+
+        @media print { .tab-bar, .action-btns { display: none; } .section { display: block !important; } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>نظام الطيبات الصحي</h1>
+        <p>إعداد وحفظ حقوق: سعد علي القرني</p>
+    </div>
+
+    <div class="action-btns">
+        <button class="btn btn-print" onclick="window.print()">🖨️ طباعة الجدول</button>
+        <button class="btn btn-wa" onclick="shareWhatsApp()">📲 مشاركة واتساب</button>
+    </div>
+
+    <div id="meals" class="section active">
+        <div id="week-list"></div>
+    </div>
+
+    <div id="meat-tech" class="section">
+        <div class="info-card">
+            <span class="info-title">🍖 أنواع اللحوم الموصى بها</span>
+            <p>لحم غنم بلدي طازج: <strong>حري - نجدي - نعيمي</strong></p>
+        </div>
+        <div class="info-card">
+            <span class="info-title">🔥 فنون الطهي المسموحة</span>
+            <ul style="line-height: 1.8;">
+                <li><strong>مظبي:</strong> على الحجر (أنظف أنواع الطهي).</li>
+                <li><strong>حنيذ / مندي:</strong> في المرخ أو التنور (طهي بطيء يحفظ القيمة).</li>
+                <li><strong>مشوي:</strong> على الفحم (بدون حرق اللحم).</li>
+                <li><strong>مضغوط / مدفون:</strong> يحفظ الرطوبة والليونة.</li>
+                <li><strong>مقلقل:</strong> بزبده طبيعية وفلفل أسود.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="supplements" class="section">
+        <div class="info-card">
+            <span class="info-title">💊 جدول المكملات (نظام الطيبات)</span>
+            <table>
+                <tr>
+                    <th>العمر</th>
+                    <th>المكمل</th>
+                    <th>الجرعة</th>
+                    <th>الوقت</th>
+                </tr>
+                <tr>
+                    <td>18 - 40</td>
+                    <td>فيتامين D3</td>
+                    <td>5000 IU</td>
+                    <td>بعد الغداء</td>
+                </tr>
+                <tr>
+                    <td>40 - 60+</td>
+                    <td>Omega 3</td>
+                    <td>1000 mg</td>
+                    <td>وسط الوجبة</td>
+                </tr>
+                <tr>
+                    <td>الكل</td>
+                    <td>B12</td>
+                    <td>1000 mcg</td>
+                    <td>تحت اللسان</td>
+                </tr>
+            </table>
+            <p style="font-size: 0.7rem; margin-top: 10px; color: #d9534f;">* ملاحظة: يجب استشارة الطبيب قبل البدء بالمكملات.</p>
+        </div>
+    </div>
+
+    <div class="footer-credit">
+        إعداد فني مختبر سبت العلايه<br>
+        <strong>سعد علي القرني</strong><br>
+        جميع الحقوق محفوظة © 2026
+    </div>
+</div>
+
+<nav class="tab-bar">
+    <button class="tab-btn active" onclick="showTab('meals', this)">🥗 الوجبات</button>
+    <button class="tab-btn" onclick="showTab('meat-tech', this)">🍖 اللحوم</button>
+    <button class="tab-btn" onclick="showTab('supplements', this)">💊 المكملات</button>
+</nav>
+
+<script>
+    const data = [
+        { d: "الأحد", b: "كبدة غنم طازجة (مقلقل بالزبدة)", l: "مظبي لحم حري مع أرز عنبر", s: "قهوة سعودية وتمر + شاي أخضر", d_: "فتة نخالة بسمن وعسل" },
+        { d: "الاثنين", b: "توست نخالة وجبن شيدر", l: "لحم نجدي مضغوط (كوسة وجزر)", s: "قهوة وتمر + شاي أخضر", d_: "بطاطس مسلوقة بالسمن" },
+        { d: "الثلاثاء", b: "كبدة غنم مع توست نخالة", l: "حنيذ لحم نعيمي وأرز", s: "قهوة وتمر + تمرية", d_: "عصيدة نخالة بسمن وعسل" },
+        { d: "الأربعاء", b: "توست نخالة بزبدة ومربى", l: "قرصان لحم ومندي غنم", s: "قهوة وتمر + شاي أخضر", d_: "بطاطس مهروسة" },
+        { d: "الخميس", b: "مقلقل كبدة طازج", l: "لحم حاشي مدفون وأرز", s: "قهوة وتمر + سناك نخالة", d_: "فتة عسل وسمن" },
+        { d: "الجمعة", b: "توست نوتيلا وموز", l: "سمك كنعد مشوي على الفحم", s: "قهوة وتمر + شاي", d_: "بطاطس بالفرن" },
+        { d: "السبت", b: "كبدة غنم وتوست", l: "عصيدة بمرق لحم غنم بلدي", s: "قهوة وتمر + تمرية", d_: "قرصان خفيف بسمن وعسل" }
+    ];
+
+    const list = document.getElementById('week-list');
+    list.innerHTML = data.map(item => `
+        <div class="day-block">
+            <div class="day-header">${item.d}</div>
+            <div class="meal-row"><span class="meal-label">🍳 فطور:</span> <span>${item.b}</span></div>
+            <div class="meal-row"><span class="meal-label">🍲 غداء:</span> <span>${item.l}</span></div>
+            <div class="meal-row"><span class="meal-label">☕ سناك:</span> <span>${item.s}</span></div>
+            <div class="meal-row"><span class="meal-label">🌙 عشاء:</span> <span>${item.d_}</span></div>
+        </div>
+    `).join('');
+
+    function showTab(id, btn) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        btn.classList.add('active');
+        window.scrollTo(0,0);
+    }
+
+    function shareWhatsApp() {
+        const text = encodeURIComponent("نظام الطيبات الصحي - إعداد سعد علي القرني \nرابط الجدول: " + window.location.href);
+        window.open(`https://api.whatsapp.com/send?text=${text}`);
+    }
+</script>
+
+</body>
+</html>
